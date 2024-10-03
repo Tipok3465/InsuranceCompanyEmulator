@@ -12,7 +12,9 @@ find_package(Qt6 COMPONENTS Widgets REQUIRED)
 add_executable(InsuranceCompanyEmulatorTrue main.cpp
         src/header.h
         src/Front/App.cpp
-        src/Front/App.h)
+        src/Front/App.h
+        src/Back/Company.cpp
+        src/Back/Company.h)
 target_link_libraries(InsuranceCompanyEmulatorTrue
         Qt6::Widgets
 )
