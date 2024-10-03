@@ -1,14 +1,19 @@
-//
-// Created by Данил Подлягин on 03.10.2024.
-//
+#include "../header.h"
+#pragma once
 
-#ifndef INSURANCECOMPANYEMULATORTRUE_APP_H
-#define INSURANCECOMPANYEMULATORTRUE_APP_H
+class App : public QMainWindow {
+    Q_OBJECT
 
+public:
+    App(int width, int height);
+    ~App() override;
 
-class App {
-
+    void render() {
+        window_->show();
+    }
+private:
+    QString font_family_;
+    QMainWindow* window_;
+    QLabel* start_label_;
+    QPushButton* start_game_;
 };
-
-
-#endif //INSURANCECOMPANYEMULATORTRUE_APP_H

@@ -14,7 +14,9 @@ add_executable(InsuranceCompanyEmulatorTrue main.cpp
         src/Front/App.cpp
         src/Front/App.h
         src/Back/Company.cpp
-        src/Back/Company.h)
+        src/Back/Company.h
+        src/Front/MainWindow.cpp
+        src/Front/MainWindow.h)
 target_link_libraries(InsuranceCompanyEmulatorTrue
         Qt6::Widgets
 )
