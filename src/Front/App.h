@@ -1,0 +1,14 @@
+//
+// Created by Данил Подлягин on 03.10.2024.
+//
+
+#ifndef INSURANCECOMPANYEMULATORTRUE_APP_H
+#define INSURANCECOMPANYEMULATORTRUE_APP_H
+
+
+class App {
+
+};
+
+
+#endif //INSURANCECOMPANYEMULATORTRUE_APP_H

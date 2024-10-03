@@ -10,7 +10,9 @@ set(CMAKE_AUTOUIC ON)
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 
 add_executable(InsuranceCompanyEmulatorTrue main.cpp
-        src/header.h)
+        src/header.h
+        src/Front/App.cpp
+        src/Front/App.h)
 target_link_libraries(InsuranceCompanyEmulatorTrue
         Qt6::Widgets
 )
