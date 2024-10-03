@@ -10,8 +10,10 @@ public:
 private:
     QString font_family_;
     QLabel* cur_capital_;
+    QLabel* cur_month_;
     int month_count_;
     int start_capital_;
     int tax_percentage_;
     int base_demand_;
+    int cur_month_id_ = 1;
 };
