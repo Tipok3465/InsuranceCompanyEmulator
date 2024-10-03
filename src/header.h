@@ -39,6 +39,7 @@
 #include <QWaitCondition>
 #include <QGestureEvent>
 #include <QCommandLineParser>
+#include <QSpinBox>
 
 #include <fstream>
 #include <iostream>
