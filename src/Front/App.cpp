@@ -1,7 +1,8 @@
 #include "App.h"
 
 App::App(int width, int height) {
-    int id = QFontDatabase::addApplicationFont("/Users/noname/Documents/Programming/Applied/InsuranceCompanyEmulatorTrue/src/Front/resources/PlaywriteDEGrund-VariableFont_wght.ttf");
+    QFileInfo file("../src/Front/resources/PlaywriteDEGrund-VariableFont_wght.ttf");
+    int id = QFontDatabase::addApplicationFont(file.absolutePath() + "/PlaywriteDEGrund-VariableFont_wght.ttf");
     font_family_ = QFontDatabase::applicationFontFamilies(id).at(0);
     window_ = new QMainWindow();
     window_->setFixedSize(width, height);
