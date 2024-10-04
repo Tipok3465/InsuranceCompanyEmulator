@@ -3,6 +3,7 @@
 MainWindow::MainWindow(QWidget *parent) {
     setMouseTracking(true);
     setParent(parent);
+
     int id = QFontDatabase::addApplicationFont("/Users/noname/Documents/Programming/Applied/InsuranceCompanyEmulatorTrue/src/Front/resources/PlaywriteDEGrund-VariableFont_wght.ttf");
     font_family_ = QFontDatabase::applicationFontFamilies(id).at(0);
 
