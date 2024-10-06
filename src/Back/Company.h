@@ -10,7 +10,10 @@ public:
 
     Company():
         cur_balance(0), home_insurance_price(0),
-        car_insurance_price(0), life_insurance_price(0) {}
+        car_insurance_price(0), life_insurance_price(0),
+        home_insurance_demand(0), car_insurance_demand(0),
+        life_insurance_demand(0), home_insurance_compensation(0),
+        car_insurance_compensation(0), life_insurance_compensation(0) {}
 
     void set_home_insurance_price(int price);
 
@@ -62,18 +65,11 @@ public:
 
     int buy_life_insurance();
 
-
-
-
-
 private:
     int cur_balance, home_insurance_price, car_insurance_price, life_insurance_price;
 
     int home_insurance_demand, car_insurance_demand, life_insurance_demand;
 
     int home_insurance_compensation, car_insurance_compensation, life_insurance_compensation;
-
-
-
 };
 
