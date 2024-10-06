@@ -24,25 +24,43 @@ public:
 
     void set_life_insurance_demand(int demand);
 
+    void set_home_insurance_compensation(int compensation);
+
+    void set_car_insurance_compensation(int compensation);
+
+    void set_life_insurance_compensation(int compensation);
+
     void set_cur_balance(int balance);
 
-    int get_home_insurance_price();
+    [[nodiscard]] int get_home_insurance_price() const;
 
-    int get_car_insurance_price();
+    [[nodiscard]] int get_car_insurance_price() const;
 
-    int get_life_insurance_price();
+    [[nodiscard]] int get_life_insurance_price() const;
 
-    int get_home_insurance_demand();
+    [[nodiscard]] int get_home_insurance_demand() const;
 
-    int get_car_insurance_demand();
+    [[nodiscard]] int get_car_insurance_demand() const;
 
-    int get_life_insurance_demand();
+    [[nodiscard]] int get_life_insurance_demand() const;
 
-    int get_cur_balance();
+    [[nodiscard]] int get_home_insurance_compensation() const;
+
+    [[nodiscard]] int get_car_insurance_compensation() const;
+
+    [[nodiscard]] int get_life_insurance_compensation() const;
+
+    [[nodiscard]] int get_cur_balance() const;
 
     int tax(int percent);
 
     bool bankrupt();
+
+    int buy_home_insurance();
+
+    int buy_car_insurance();
+
+    int buy_life_insurance();
 
 
 
@@ -53,6 +71,7 @@ private:
 
     int home_insurance_demand, car_insurance_demand, life_insurance_demand;
 
+    int home_insurance_compensation, car_insurance_compensation, life_insurance_compensation;
 
 
 
