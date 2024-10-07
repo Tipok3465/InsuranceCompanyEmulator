@@ -31,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent) {
     cur_capital_label_->resize(1024, 70);
     cur_capital_label_->move(0, 40);
     cur_capital_label_->setStyleSheet("QLabel {"
-                              "color: rgb(0, 0, 0);"
-                              "}");
+                                      "color: rgb(0, 0, 0);"
+                                      "}");
     cur_capital_label_->setAlignment(Qt::AlignCenter);
 
     income_label_ = new IncomeLabel(this);
@@ -81,7 +81,7 @@ void MainWindow::setParams(int month_count, int start_capital, int tax_percentag
     inc_val_ = 66;
     income_drawing_->start(25);
     cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
-                                                "/" + std::to_string(month_count_) + " month"));
+                                               "/" + std::to_string(month_count_) + " month"));
     tax_percentage_ = tax_percentage;
     base_demand_ = base_demand;
 }
