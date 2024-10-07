@@ -40,4 +40,5 @@
 #include <QGestureEvent>
 #include <QCommandLineParser>
 #include <QSpinBox>
+#include <QTimer>
 #include <QMovie>

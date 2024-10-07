@@ -26,24 +26,60 @@ MainWindow::MainWindow(QWidget *parent) {
                               "}");
     cur_month_->setAlignment(Qt::AlignCenter);
 
-    cur_capital_ = new QLabel(this);
-    cur_capital_->setFont(QFont(font_family_, 30));
-    cur_capital_->resize(1024, 70);
-    cur_capital_->move(0, 40);
-    cur_capital_->setStyleSheet("QLabel {"
+    cur_capital_label_ = new QLabel(this);
+    cur_capital_label_->setFont(QFont(font_family_, 30));
+    cur_capital_label_->resize(1024, 70);
+    cur_capital_label_->move(0, 40);
+    cur_capital_label_->setStyleSheet("QLabel {"
                               "color: rgb(0, 0, 0);"
                               "}");
-    cur_capital_->setAlignment(Qt::AlignCenter);
+    cur_capital_label_->setAlignment(Qt::AlignCenter);
+
+    income_label_ = new IncomeLabel(this);
+    income_label_->setRange(0, 100);
+    income_label_->setWidth(300);
+    income_label_->resize(10, 10);
+    income_label_->move(20, 300);
+
+    income_drawing_ = new QTimer(this);
+    connect(income_drawing_, &QTimer::timeout, this, &MainWindow::drawIncome);
+
+    capital_drawing_ = new QTimer(this);
+    connect(capital_drawing_, &QTimer::timeout, this, &MainWindow::drawCapital);
+}
+
+void MainWindow::drawIncome() {
+    if (income_label_->getValue() == inc_val_) {
+        income_drawing_->stop();
+        inc_val_ = 0;
+    } else {
+        income_label_->setValue(income_label_->getValue()+1);
+    }
+}
+
+void MainWindow::drawCapital() {
+    if (cur_cap == cur_capital_) {
+        capital_drawing_->stop();
+        cur_cap = 0;
+    } else {
+        if (abs(cur_cap - cur_capital_) <= 10) cur_cap++;
+        else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 10;
+        else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap += 100;
+        else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap += 1000;
+        cur_capital_label_->setText(QString::fromStdString("Capital: " + std::to_string(cur_cap) + "₽"));
+    }
 }
 
 MainWindow::~MainWindow() {
-    delete cur_capital_;
+    delete cur_capital_label_;
 }
 
 void MainWindow::setParams(int month_count, int start_capital, int tax_percentage, int base_demand) {
     month_count_ = month_count;
-    start_capital_ = start_capital;
-    cur_capital_->setText(QString::fromStdString("Capital: " + std::to_string(start_capital_) + "₽"));
+    cur_capital_ = start_capital;
+    capital_drawing_->start(1);
+    inc_val_ = 66;
+    income_drawing_->start(25);
     cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
                                                 "/" + std::to_string(month_count_) + " month"));
     tax_percentage_ = tax_percentage;
