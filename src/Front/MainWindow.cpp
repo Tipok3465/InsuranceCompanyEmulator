@@ -35,17 +35,55 @@ MainWindow::MainWindow(QWidget *parent) {
                               "}");
     cur_capital_label_->setAlignment(Qt::AlignCenter);
 
+    inc_label_ = new QLabel(this);
+    inc_label_->setFont(QFont(font_family_, 25));
+    inc_label_->resize(300, 70);
+    inc_label_->move(30, 260);
+    inc_label_->setStyleSheet("QLabel {"
+                                      "color: rgb(0, 0, 0);"
+                                      "}");
+    inc_label_->setText("Incomes");
+    inc_label_->setAlignment(Qt::AlignLeft);
+
     income_label_ = new IncomeLabel(this);
     income_label_->setRange(0, 100);
     income_label_->setWidth(300);
     income_label_->resize(10, 10);
-    income_label_->move(20, 300);
+    income_label_->move(30, 300);
+
+    exp_label_ = new QLabel(this);
+    exp_label_->setFont(QFont(font_family_, 25));
+    exp_label_->resize(300, 70);
+    exp_label_->move(694, 260);
+    exp_label_->setStyleSheet("QLabel {"
+                              "color: rgb(0, 0, 0);"
+                              "}");
+    exp_label_->setText("Expenses");
+    exp_label_->setAlignment(Qt::AlignRight);
+
+    expense_label_ = new ExpenseLabel(this);
+    expense_label_->resize(10, 10);
+    expense_label_->setRange(0, 100);
+    expense_label_->move(694, 300);
+    expense_label_->setWidth(300);
+
+    expense_drawing_ = new QTimer(this);
+    connect(expense_drawing_, &QTimer::timeout, this, &MainWindow::drawExpense);
 
     income_drawing_ = new QTimer(this);
     connect(income_drawing_, &QTimer::timeout, this, &MainWindow::drawIncome);
 
     capital_drawing_ = new QTimer(this);
     connect(capital_drawing_, &QTimer::timeout, this, &MainWindow::drawCapital);
+}
+
+void MainWindow::drawExpense() {
+    if (expense_label_->getValue() == exp_val_) {
+        expense_drawing_->stop();
+        exp_val_ = 0;
+    } else {
+        expense_label_->setValue(expense_label_->getValue()+1);
+    }
 }
 
 void MainWindow::drawIncome() {
@@ -64,8 +102,10 @@ void MainWindow::drawCapital() {
     } else {
         if (abs(cur_cap - cur_capital_) <= 10) cur_cap++;
         else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 10;
-        else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap += 100;
-        else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap += 1000;
+        else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 100;
+        else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap += 1000;
+        else if (abs(cur_cap - cur_capital_) <= 1000000) cur_cap += 10000;
+        else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap += 100000;
         cur_capital_label_->setText(QString::fromStdString("Capital: " + std::to_string(cur_cap) + "₽"));
     }
 }
@@ -78,8 +118,10 @@ void MainWindow::setParams(int month_count, int start_capital, int tax_percentag
     month_count_ = month_count;
     cur_capital_ = start_capital;
     capital_drawing_->start(1);
-    inc_val_ = 66;
+    inc_val_ = 100;
     income_drawing_->start(25);
+    exp_val_ = 100;
+    expense_drawing_->start(25);
     cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
                                                 "/" + std::to_string(month_count_) + " month"));
     tax_percentage_ = tax_percentage;
