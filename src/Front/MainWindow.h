@@ -8,6 +8,7 @@ public:
     ~MainWindow();
     void setParams(int month_count, int start_capital, int tax_percentage, int base_demand);
 private:
+    QLabel* bg_label_;
     QString font_family_;
     QLabel* cur_capital_;
     QLabel* cur_month_;

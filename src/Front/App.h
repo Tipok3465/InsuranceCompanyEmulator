@@ -18,6 +18,7 @@ private:
     QString font_family_;
     QMainWindow* window_;
     QLabel* start_label_;
+    QLabel* start_bg_;
     QSpinBox* month_count_editor_;
     QLabel* month_count_label_;
     QSpinBox* start_capital_editor_;
