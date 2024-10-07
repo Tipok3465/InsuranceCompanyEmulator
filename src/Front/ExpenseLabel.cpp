@@ -7,7 +7,7 @@
 ExpenseLabel::ExpenseLabel(QWidget *parent) {
     setParent(parent);
     setStyleSheet("QLabel {"
-                  "background-color: red;"
+                  "background-color: rgba(215, 5, 5, 100);"
                   "border-radius: 5px;"
                   "}");
 }
@@ -20,6 +20,8 @@ void ExpenseLabel::setRange(int l, int r) {
 void ExpenseLabel::setWidth(int w) {
     x_ = this->x();
     width_ = w;
+    this->resize(std::max(10, width_ * val_ / rhs_), this->height());
+    this->move(x_ + width_ - this->width(), this->y());
 }
 
 void ExpenseLabel::setValue(int x) {

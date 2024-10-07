@@ -10,12 +10,7 @@ MainWindow::MainWindow(QWidget *parent) {
 
     bg_label_ = new QLabel(this);
     bg_label_->resize(1024, 768);
-    bg_label_->setStyleSheet("QLabel {"
-                             "background: rgb(255, 255, 255);"
-                             "}");
-//    auto bg = new QMovie("../src/Front/resources/bg.gif");
-//    bg_label_->setMovie(bg);
-//    bg->start();
+    bg_label_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
 
     cur_month_ = new QLabel(this);
     cur_month_->setFont(QFont(font_family_, 20));
@@ -38,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) {
     inc_label_ = new QLabel(this);
     inc_label_->setFont(QFont(font_family_, 25));
     inc_label_->resize(300, 70);
-    inc_label_->move(30, 260);
+    inc_label_->move(30, 160);
     inc_label_->setStyleSheet("QLabel {"
                                       "color: rgb(0, 0, 0);"
                                       "}");
@@ -49,12 +44,60 @@ MainWindow::MainWindow(QWidget *parent) {
     income_label_->setRange(0, 100);
     income_label_->setWidth(300);
     income_label_->resize(10, 10);
-    income_label_->move(30, 300);
+    income_label_->move(30, 200);
+
+    house_inc_label_ = new QLabel(this);
+    house_inc_label_->setFont(QFont(font_family_, 20));
+    house_inc_label_->resize(300, 70);
+    house_inc_label_->move(40, 220);
+    house_inc_label_->setStyleSheet("QLabel {"
+                              "color: rgb(0, 0, 0);"
+                              "}");
+    house_inc_label_->setText("house");
+    house_inc_label_->setAlignment(Qt::AlignLeft);
+
+    house_income_label_ = new IncomeLabel(this);
+    house_income_label_->setRange(0, 100);
+    house_income_label_->setWidth(300);
+    house_income_label_->resize(10, 10);
+    house_income_label_->move(40, 250);
+
+    car_inc_label_ = new QLabel(this);
+    car_inc_label_->setFont(QFont(font_family_, 20));
+    car_inc_label_->resize(300, 70);
+    car_inc_label_->move(40, 270);
+    car_inc_label_->setStyleSheet("QLabel {"
+                                    "color: rgb(0, 0, 0);"
+                                    "}");
+    car_inc_label_->setText("car");
+    car_inc_label_->setAlignment(Qt::AlignLeft);
+
+    car_income_label_ = new IncomeLabel(this);
+    car_income_label_->setRange(0, 100);
+    car_income_label_->setWidth(300);
+    car_income_label_->resize(10, 10);
+    car_income_label_->move(40, 300);
+
+    health_inc_label_ = new QLabel(this);
+    health_inc_label_->setFont(QFont(font_family_, 20));
+    health_inc_label_->resize(300, 70);
+    health_inc_label_->move(40, 320);
+    health_inc_label_->setStyleSheet("QLabel {"
+                                  "color: rgb(0, 0, 0);"
+                                  "}");
+    health_inc_label_->setText("health");
+    health_inc_label_->setAlignment(Qt::AlignLeft);
+
+    heath_income_label_ = new IncomeLabel(this);
+    heath_income_label_->setRange(0, 100);
+    heath_income_label_->setWidth(300);
+    heath_income_label_->resize(10, 10);
+    heath_income_label_->move(40, 350);
 
     exp_label_ = new QLabel(this);
     exp_label_->setFont(QFont(font_family_, 25));
     exp_label_->resize(300, 70);
-    exp_label_->move(694, 260);
+    exp_label_->move(694, 160);
     exp_label_->setStyleSheet("QLabel {"
                               "color: rgb(0, 0, 0);"
                               "}");
@@ -64,8 +107,72 @@ MainWindow::MainWindow(QWidget *parent) {
     expense_label_ = new ExpenseLabel(this);
     expense_label_->resize(10, 10);
     expense_label_->setRange(0, 100);
-    expense_label_->move(694, 300);
+    expense_label_->move(694, 200);
     expense_label_->setWidth(300);
+
+    house_exp_label_ = new QLabel(this);
+    house_exp_label_->setFont(QFont(font_family_, 20));
+    house_exp_label_->resize(300, 70);
+    house_exp_label_->move(684, 220);
+    house_exp_label_->setStyleSheet("QLabel {"
+                              "color: rgb(0, 0, 0);"
+                              "}");
+    house_exp_label_->setText("house");
+    house_exp_label_->setAlignment(Qt::AlignRight);
+
+    house_expense_label_ = new ExpenseLabel(this);
+    house_expense_label_->resize(10, 10);
+    house_expense_label_->setRange(0, 100);
+    house_expense_label_->move(684, 250);
+    house_expense_label_->setWidth(300);
+
+    car_exp_label_ = new QLabel(this);
+    car_exp_label_->setFont(QFont(font_family_, 20));
+    car_exp_label_->resize(300, 70);
+    car_exp_label_->move(684, 270);
+    car_exp_label_->setStyleSheet("QLabel {"
+                                    "color: rgb(0, 0, 0);"
+                                    "}");
+    car_exp_label_->setText("car");
+    car_exp_label_->setAlignment(Qt::AlignRight);
+
+    car_expense_label_ = new ExpenseLabel(this);
+    car_expense_label_->resize(10, 10);
+    car_expense_label_->setRange(0, 100);
+    car_expense_label_->move(684, 300);
+    car_expense_label_->setWidth(300);
+
+    health_exp_label_ = new QLabel(this);
+    health_exp_label_->setFont(QFont(font_family_, 20));
+    health_exp_label_->resize(300, 70);
+    health_exp_label_->move(684, 320);
+    health_exp_label_->setStyleSheet("QLabel {"
+                                  "color: rgb(0, 0, 0);"
+                                  "}");
+    health_exp_label_->setText("health");
+    health_exp_label_->setAlignment(Qt::AlignRight);
+
+    health_expense_label_ = new ExpenseLabel(this);
+    health_expense_label_->resize(10, 10);
+    health_expense_label_->setRange(0, 100);
+    health_expense_label_->move(684, 350);
+    health_expense_label_->setWidth(300);
+
+    gov_exp_label_ = new QLabel(this);
+    gov_exp_label_->setFont(QFont(font_family_, 20));
+    gov_exp_label_->resize(300, 70);
+    gov_exp_label_->move(684, 370);
+    gov_exp_label_->setStyleSheet("QLabel {"
+                                     "color: rgb(0, 0, 0);"
+                                     "}");
+    gov_exp_label_->setText("government");
+    gov_exp_label_->setAlignment(Qt::AlignRight);
+
+    gov_expense_label_ = new ExpenseLabel(this);
+    gov_expense_label_->resize(10, 10);
+    gov_expense_label_->setRange(0, 100);
+    gov_expense_label_->move(684, 400);
+    gov_expense_label_->setWidth(300);
 
     expense_drawing_ = new QTimer(this);
     connect(expense_drawing_, &QTimer::timeout, this, &MainWindow::drawExpense);
@@ -117,7 +224,7 @@ MainWindow::~MainWindow() {
 void MainWindow::setParams(int month_count, int start_capital, int tax_percentage, int base_demand) {
     month_count_ = month_count;
     cur_capital_ = start_capital;
-    capital_drawing_->start(1);
+    capital_drawing_->start(10);
     inc_val_ = 100;
     income_drawing_->start(25);
     exp_val_ = 100;

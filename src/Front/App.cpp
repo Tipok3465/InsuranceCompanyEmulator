@@ -12,9 +12,7 @@ App::App(int width, int height) {
 
     start_bg_ = new QLabel(window_);
     start_bg_->resize(width, height);
-    auto bg = new QMovie("../src/Front/resources/bg.gif");
-    start_bg_->setMovie(bg);
-    bg->start();
+    start_bg_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
 
     start_label_ = new QLabel(window_);
     start_label_->resize(600, 50);
@@ -130,9 +128,46 @@ App::App(int width, int height) {
                                "}");
     connect(start_game_, &QPushButton::released, this, &App::GoToMainGame);
 
+    help_button_ = new QPushButton(window_);
+    help_button_->resize(120, 30);
+    help_button_->move(470, 360);
+    help_button_->setFont(QFont(font_family_, 12));
+    help_button_->setText("What's going on?..");
+    help_button_->setStyleSheet("QPushButton {"
+                               "color: #000000;"
+                               "background: rgba(0, 0, 0, 30);"
+                               "border-radius: 10px;"
+                               "}");
+    connect(help_button_, &QPushButton::released, this, &App::GoToHelpLabel);
+
+    help_window_ = new QMainWindow();
+    help_window_->resize(300, 200);
+    help_window_->hide();
+
+    auto help_bg_label_ = new QLabel(help_window_);
+    help_bg_label_->resize(300, 200);
+    help_bg_label_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
+
+    auto help_text_ = new QLabel(help_bg_label_);
+    help_text_->resize(300, 200);
+    help_text_->move(0, 0);
+    help_text_->setFont(QFont(font_family_, 22));
+    help_text_->setText("Our program is a \nmodel of how an \ninsurance company works\n\n"
+                        "Set the initial \nsettings and enjoyа;)");
+    help_text_->setStyleSheet("QLabel {"
+                              "color: rgb(0, 0, 0);"
+                              "}");
+    help_text_->setAlignment(Qt::AlignCenter);
+
+
     main_window_ = new MainWindow();
     main_window_->setFixedSize(1024, 768);
     main_window_->hide();
+}
+
+void App::GoToHelpLabel() {
+    if (help_window_->isHidden()) help_window_->show();
+    else help_window_->hide();
 }
 
 App::~App() {

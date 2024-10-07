@@ -7,7 +7,7 @@
 IncomeLabel::IncomeLabel(QWidget *parent) {
     setParent(parent);
     setStyleSheet("QLabel {"
-                  "background-color: green;"
+                  "background-color: rgba(17, 147, 0, 100);"
                   "border-radius: 5px;"
                   "}");
 }

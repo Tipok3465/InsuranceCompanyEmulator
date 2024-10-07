@@ -14,6 +14,7 @@ public:
     }
 protected slots:
     void GoToMainGame();
+    void GoToHelpLabel();
 private:
     QString font_family_;
     QMainWindow* window_;
@@ -28,5 +29,7 @@ private:
     QSpinBox* base_demand_editor_;
     QLabel* base_demand_label_;
     QPushButton* start_game_;
+    QPushButton* help_button_;
+    QMainWindow* help_window_;
     MainWindow* main_window_;
 };
