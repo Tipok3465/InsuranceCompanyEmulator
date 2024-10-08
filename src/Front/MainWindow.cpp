@@ -174,6 +174,82 @@ MainWindow::MainWindow(QWidget *parent) {
     gov_expense_label_->move(684, 400);
     gov_expense_label_->setWidth(300);
 
+    open_health_contract_button_ = new QPushButton(this);
+    open_health_contract_button_->resize(150, 30);
+    open_health_contract_button_->move(20, 728);
+    open_health_contract_button_->setFont(QFont(font_family_, 18));
+    open_health_contract_button_->setText("Health Contract");
+    open_health_contract_button_->setStyleSheet("QPushButton {"
+                                "color: #000000;"
+                                "background: rgba(0, 0, 0, 30);"
+                                "border-radius: 10px;"
+                                "}");
+    connect(open_health_contract_button_, &QPushButton::released, this, &MainWindow::openHealthContract);
+
+    health_contract_window_ = new QMainWindow();
+    health_contract_window_->resize(400, 550);
+    health_contract_window_->hide();
+
+    health_contract_bg_ = new QLabel(health_contract_window_);
+    health_contract_bg_->resize(400, 550);
+    health_contract_bg_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
+
+    auto health_contract_text_ = new QLabel(health_contract_bg_);
+    health_contract_text_->resize(380, 530);
+    health_contract_text_->move(10, 10);
+    health_contract_text_->setFont(QFont(font_family_, 20));
+    health_contract_text_->setStyleSheet("QLabel {"
+                                         "color: rgb(0, 0, 0);"
+                                         "}");
+    health_contract_text_->setText("By this agreement you confirm that you are enslaving yourself to our company."
+                                   "In turn, in case of health problems,\n we undertake to provide\n you with money\n in the amount of up to ...\n"
+                                   "This agreement is valid\n for ... months from the date of signing.\n"
+                                   "Cost of conclusion: ...");
+    health_contract_text_->setWordWrap(true);
+    health_contract_text_->setAlignment(Qt::AlignLeft);
+
+
+    open_car_contract_button_ = new QPushButton(this);
+    open_car_contract_button_->resize(150, 30);
+    open_car_contract_button_->move(180, 728);
+    open_car_contract_button_->setFont(QFont(font_family_, 18));
+    open_car_contract_button_->setText("House Contract");
+    open_car_contract_button_->setStyleSheet("QPushButton {"
+                                                "color: #000000;"
+                                                "background: rgba(0, 0, 0, 30);"
+                                                "border-radius: 10px;"
+                                                "}");
+    connect(open_car_contract_button_, &QPushButton::released, this, &MainWindow::openCarContract);
+
+    car_contract_window_ = new QMainWindow();
+    car_contract_window_->resize(400, 550);
+    car_contract_window_->hide();
+
+    car_contract_bg_ = new QLabel(car_contract_window_);
+    car_contract_bg_->resize(400, 550);
+    car_contract_bg_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
+
+
+    open_house_contract_button_ = new QPushButton(this);
+    open_house_contract_button_->resize(150, 30);
+    open_house_contract_button_->move(340, 728);
+    open_house_contract_button_->setFont(QFont(font_family_, 18));
+    open_house_contract_button_->setText("Car Contract");
+    open_house_contract_button_->setStyleSheet("QPushButton {"
+                                             "color: #000000;"
+                                             "background: rgba(0, 0, 0, 30);"
+                                             "border-radius: 10px;"
+                                             "}");
+    connect(open_house_contract_button_, &QPushButton::released, this, &MainWindow::openHouseContract);
+
+    house_contract_window_ = new QMainWindow();
+    house_contract_window_->resize(400, 550);
+    house_contract_window_->hide();
+
+    house_contract_bg_ = new QLabel(house_contract_window_);
+    house_contract_bg_->resize(400, 550);
+    house_contract_bg_->setPixmap(QPixmap::fromImage(QImage("../src/Front/resources/bg.png")));
+
     expense_drawing_ = new QTimer(this);
     connect(expense_drawing_, &QTimer::timeout, this, &MainWindow::drawExpense);
 
@@ -182,6 +258,19 @@ MainWindow::MainWindow(QWidget *parent) {
 
     capital_drawing_ = new QTimer(this);
     connect(capital_drawing_, &QTimer::timeout, this, &MainWindow::drawCapital);
+}
+
+void MainWindow::openHealthContract() {
+    if (health_contract_window_->isHidden()) health_contract_window_->show();
+    else health_contract_window_->hide();
+}
+void MainWindow::openCarContract() {
+    if (car_contract_window_->isHidden()) car_contract_window_->show();
+    else car_contract_window_->hide();
+}
+void MainWindow::openHouseContract() {
+    if (house_contract_window_->isHidden()) house_contract_window_->show();
+    else house_contract_window_->hide();
 }
 
 void MainWindow::drawExpense() {
@@ -209,7 +298,7 @@ void MainWindow::drawCapital() {
     } else {
         if (abs(cur_cap - cur_capital_) <= 10) cur_cap++;
         else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 10;
-        else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 100;
+        else if (abs(cur_cap - cur_capital_) <= 10000) cur_cap += 100;
         else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap += 1000;
         else if (abs(cur_cap - cur_capital_) <= 1000000) cur_cap += 10000;
         else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap += 100000;
@@ -231,6 +320,7 @@ void MainWindow::setParams(int month_count, int start_capital, int tax_percentag
     expense_drawing_->start(25);
     cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
                                                "/" + std::to_string(month_count_) + " month"));
+    company_.set_cur_balance(start_capital);
     tax_percentage_ = tax_percentage;
     base_demand_ = base_demand;
 }

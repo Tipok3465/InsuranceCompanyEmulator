@@ -1,6 +1,7 @@
 #include "../header.h"
 #include "IncomeLabel.h"
 #include "ExpenseLabel.h"
+#include "../Back/Company.h"
 #pragma once
 
 class MainWindow : public QMainWindow {
@@ -12,7 +13,11 @@ public:
     void drawCapital();
     void drawIncome();
     void drawExpense();
+    void openHealthContract();
+    void openCarContract();
+    void openHouseContract();
 private:
+    Company company_;
     QTimer* capital_drawing_;
     QTimer* expense_drawing_;
     QTimer* income_drawing_;
@@ -29,6 +34,18 @@ private:
     QLabel* car_exp_label_;
     QLabel* health_exp_label_;
     QLabel* gov_exp_label_;
+
+    QPushButton* open_health_contract_button_;
+    QMainWindow* health_contract_window_;
+    QLabel* health_contract_bg_;
+
+    QPushButton* open_car_contract_button_;
+    QMainWindow* car_contract_window_;
+    QLabel* car_contract_bg_;
+
+    QPushButton* open_house_contract_button_;
+    QMainWindow* house_contract_window_;
+    QLabel* house_contract_bg_;
     int month_count_;
     int cur_capital_;
     int cur_cap = 0;
