@@ -4,6 +4,12 @@
 #include "../Back/Company.h"
 #pragma once
 
+struct Contract {
+    int month_count = 6;
+    int max_pay = 50000;
+    int price = 10000;
+};
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -16,8 +22,10 @@ public:
     void openHealthContract();
     void openCarContract();
     void openHouseContract();
+    void setHealthContract();
 private:
     Company company_;
+    std::vector<std::vector<std::pair<int, int>>> peoples_;
     QTimer* capital_drawing_;
     QTimer* expense_drawing_;
     QTimer* income_drawing_;
@@ -38,14 +46,26 @@ private:
     QPushButton* open_health_contract_button_;
     QMainWindow* health_contract_window_;
     QLabel* health_contract_bg_;
+    QLabel* health_contract_text_;
+    QLabel* health_label_month_editor_;
+    QSpinBox* health_contract_month_editor_;
+    QPushButton* health_set_month_count_button_;
+    QLabel* health_label_max_pay_editor_;
+    QSpinBox* health_contract_max_pay_editor_;
+    QLabel* health_label_price_editor_;
+    QSpinBox* health_contract_price_editor_;
 
     QPushButton* open_car_contract_button_;
     QMainWindow* car_contract_window_;
     QLabel* car_contract_bg_;
+    QLabel* car_contract_text_;
 
     QPushButton* open_house_contract_button_;
     QMainWindow* house_contract_window_;
     QLabel* house_contract_bg_;
+    QLabel* house_contract_text_;
+
+    Contract health_contract_, car_contract_, house_contract_;
     int month_count_;
     int cur_capital_;
     int cur_cap = 0;
