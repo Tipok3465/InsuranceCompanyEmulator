@@ -108,5 +108,7 @@ private:
     int home_insurance_compensation, car_insurance_compensation, life_insurance_compensation;
 
     int home_insurance_period, car_insurance_period, life_insurance_period;
+
+
 };
 
