@@ -203,10 +203,10 @@ MainWindow::MainWindow(QWidget *parent) {
                                          "}");
     health_contract_text_->setText("HEALTH AGREEMENT\n\nBy this agreement you confirm that you are enslaving yourself to our company."
                                    " In turn, in case of health problems, we undertake to provide you with money in the amount "
-                                   "of up to " + QString::fromStdString(std::to_string(health_contract_.max_pay)) + "₽\n"
+                                   "of up to " + QString::fromStdString(std::to_string(health_contract_.max_pay)) + "₽.\n"
                                    "This agreement is valid for " + QString::fromStdString(std::to_string(health_contract_.month_count)) + " months from the date of signing."
                                    " Cost of conclusion: " +
-                                   QString::fromStdString(std::to_string(health_contract_.price))+ "₽\n\n");
+                                   QString::fromStdString(std::to_string(health_contract_.price))+ "₽.\n\n");
     health_contract_text_->setWordWrap(true);
     health_contract_text_->setAlignment(Qt::AlignHCenter);
 
@@ -323,11 +323,11 @@ MainWindow::MainWindow(QWidget *parent) {
                                          "}");
     car_contract_text_->setText("CAR AGREEMENT\n\nBy this agreement you confirm that you are enslaving yourself to our company."
                                    " In turn, in case of car breakdown, we undertake to provide you with money in the amount "
-                                   "of up to " + QString::fromStdString(std::to_string(car_contract_.max_pay)) + "₽\n"\
+                                   "of up to " + QString::fromStdString(std::to_string(car_contract_.max_pay)) + "₽.\n"\
                                    "This agreement is valid for " + QString::fromStdString(std::to_string(car_contract_.month_count))
                                    + " months from the date of signing."\
                                    " Cost of conclusion: " +
-                                   QString::fromStdString(std::to_string(car_contract_.price))+ "₽");
+                                   QString::fromStdString(std::to_string(car_contract_.price))+ "₽.");
     car_contract_text_->setWordWrap(true);
     car_contract_text_->setAlignment(Qt::AlignHCenter);
 
@@ -361,11 +361,11 @@ MainWindow::MainWindow(QWidget *parent) {
                                       "}");
     house_contract_text_->setText("HOUSE AGREEMENT\n\nBy this agreement you confirm that you are enslaving yourself to our company."
                                 " In turn, in case of fire in house, we undertake to provide you with money in the amount "
-                                "of up to " + QString::fromStdString(std::to_string(house_contract_.max_pay)) + "₽\n"\
+                                "of up to " + QString::fromStdString(std::to_string(house_contract_.max_pay)) + "₽.\n"\
                                    "This agreement is valid for " + QString::fromStdString(std::to_string(house_contract_.month_count))
                                 + " months from the date of signing."\
                                    " Cost of conclusion: " +
-                                QString::fromStdString(std::to_string(house_contract_.price))+ "₽");
+                                QString::fromStdString(std::to_string(house_contract_.price))+ "₽.");
     house_contract_text_->setWordWrap(true);
     house_contract_text_->setAlignment(Qt::AlignHCenter);
 
@@ -386,42 +386,99 @@ void MainWindow::setHealthContract() {
     health_contract_.price = health_contract_price_editor_->value();
     health_contract_text_->setText("HEALTH AGREEMENT\n\nBy this agreement you confirm that you are enslaving yourself to our company."
                                    " In turn, in case of health problems, we undertake to provide you with money in the amount "
-                                   "of up to " + QString::fromStdString(std::to_string(health_contract_.max_pay)) + "₽\n"\
+                                   "of up to " + QString::fromStdString(std::to_string(health_contract_.max_pay)) + "₽.\n"\
                                    "This agreement is valid for " +
                                    QString::fromStdString(std::to_string(health_contract_.month_count)) +
                                    " months from the date of signing."\
                                    " Cost of conclusion: " +
-                                   QString::fromStdString(std::to_string(health_contract_.price))+ "₽\n\n");
-    std::cout << "OK\n";
+                                   QString::fromStdString(std::to_string(health_contract_.price))+ "₽.\n\n");
+}
+
+void MainWindow::updMonth() {
+    auto res = resolve.month_result(peoples_, insurance_cases_, company_, cur_month_id_);
+    cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
+                                               "/" + std::to_string(month_count_) + " month"));
+    cur_month_id_++;
+    house_income_ = res[0].first;
+    house_expense_ = res[0].second;
+    car_income_ = res[1].first;
+    car_expense_ = res[1].second;
+    health_income_ = res[2].first;
+    health_expense_ = res[2].second;
+
+    car_inc_val_ = car_income_ * 100 / MAX;
+    car_exp_val_ = car_expense_ * 100 / MAX;
+    house_inc_val_ = house_income_ * 100 / MAX;
+    house_exp_val_ = house_expense_ * 100 / MAX;
+    health_inc_val_ = health_income_ * 100 / MAX;
+    health_exp_val_ = health_expense_ * 100 / MAX;
+    inc_val_ = (house_income_ + car_income_ + health_income_) * 100 / (3*MAX);
+    exp_val_ = (house_expense_ + car_expense_ + health_expense_) * 100 / (3*MAX);
+
+    cur_capital_ = cur_capital_ + car_income_ - car_expense_ + house_income_ - house_expense_ + health_income_ - health_expense_;
+    income_drawing_->start(25);
+    expense_drawing_->start(25);
+    capital_drawing_->start(10);
+
 }
 
 void MainWindow::openHealthContract() {
     if (health_contract_window_->isHidden()) health_contract_window_->show();
     else health_contract_window_->hide();
 }
+
 void MainWindow::openCarContract() {
     if (car_contract_window_->isHidden()) car_contract_window_->show();
     else car_contract_window_->hide();
 }
+
 void MainWindow::openHouseContract() {
     if (house_contract_window_->isHidden()) house_contract_window_->show();
     else house_contract_window_->hide();
 }
 
 void MainWindow::drawExpense() {
-    if (expense_label_->getValue() == exp_val_) {
+    if (expense_label_->getValue() == exp_val_ &&
+        car_expense_label_->getValue() == car_exp_val_ &&
+        house_expense_label_->getValue() == house_exp_val_ &&
+        health_expense_label_->getValue() == health_exp_val_) {
         expense_drawing_->stop();
-        exp_val_ = 0;
-    } else {
+        inc_val_ = 0;
+        return;
+    }
+    if (car_expense_label_->getValue() < car_exp_val_) {
+        car_expense_label_->setValue(car_expense_label_->getValue()+1);
+    }
+    if (house_expense_label_->getValue() < house_exp_val_) {
+        house_expense_label_->setValue(house_expense_label_->getValue()+1);
+    }
+    if (health_expense_label_->getValue() < health_exp_val_) {
+        health_expense_label_->setValue(health_expense_label_->getValue()+1);
+    }
+    if (expense_label_->getValue() < exp_val_) {
         expense_label_->setValue(expense_label_->getValue()+1);
     }
 }
 
 void MainWindow::drawIncome() {
-    if (income_label_->getValue() == inc_val_) {
+    if (income_label_->getValue() == inc_val_ &&
+        car_income_label_->getValue() == car_inc_val_ &&
+        house_income_label_->getValue() == house_inc_val_ &&
+        heath_income_label_->getValue() == health_inc_val_) {
         income_drawing_->stop();
         inc_val_ = 0;
-    } else {
+        return;
+    }
+    if (car_income_label_->getValue() < car_inc_val_) {
+        car_income_label_->setValue(car_income_label_->getValue()+1);
+    }
+    if (house_income_label_->getValue() < house_inc_val_) {
+        house_income_label_->setValue(house_income_label_->getValue()+1);
+    }
+    if (heath_income_label_->getValue() < health_inc_val_) {
+        heath_income_label_->setValue(heath_income_label_->getValue()+1);
+    }
+    if (income_label_->getValue() < inc_val_) {
         income_label_->setValue(income_label_->getValue()+1);
     }
 }
@@ -430,13 +487,22 @@ void MainWindow::drawCapital() {
     if (cur_cap == cur_capital_) {
         capital_drawing_->stop();
         cur_cap = 0;
-    } else {
+    } else if (cur_cap < cur_capital_){
         if (abs(cur_cap - cur_capital_) <= 10) cur_cap++;
         else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 10;
         else if (abs(cur_cap - cur_capital_) <= 10000) cur_cap += 100;
         else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap += 1000;
         else if (abs(cur_cap - cur_capital_) <= 1000000) cur_cap += 10000;
         else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap += 100000;
+        cur_capital_label_->setText(QString::fromStdString("Capital: " + std::to_string(cur_cap) + "₽"));
+    }
+    else if (cur_cap > cur_capital_) {
+        if (abs(cur_cap - cur_capital_) <= 10) cur_cap--;
+        else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap -= 10;
+        else if (abs(cur_cap - cur_capital_) <= 10000) cur_cap -= 100;
+        else if (abs(cur_cap - cur_capital_) <= 100000) cur_cap -= 1000;
+        else if (abs(cur_cap - cur_capital_) <= 1000000) cur_cap -= 10000;
+        else if (abs(cur_cap - cur_capital_) <= 10000000) cur_cap -= 100000;
         cur_capital_label_->setText(QString::fromStdString("Capital: " + std::to_string(cur_cap) + "₽"));
     }
 }
@@ -449,16 +515,28 @@ void MainWindow::setParams(int month_count, int start_capital, int tax_percentag
     month_count_ = month_count;
     cur_capital_ = start_capital;
     capital_drawing_->start(10);
-    inc_val_ = 100;
-    income_drawing_->start(25);
-    exp_val_ = 100;
-    expense_drawing_->start(25);
-    cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
-                                               "/" + std::to_string(month_count_) + " month"));
+
     company_.set_cur_balance(start_capital);
+
     company_.set_car_insurance_demand(base_demand);
     company_.set_home_insurance_demand(base_demand);
     company_.set_life_insurance_demand(base_demand);
+
+    company_.set_car_insurance_period(car_contract_.month_count);
+    company_.set_home_insurance_period(house_contract_.month_count);
+    company_.set_life_insurance_period(health_contract_.month_count);
+
+    company_.set_car_insurance_price(car_contract_.price);
+    company_.set_home_insurance_price(house_contract_.price);
+    company_.set_life_insurance_price(health_contract_.price);
+
+    company_.set_car_insurance_compensation(car_contract_.max_pay);
+    company_.set_home_insurance_compensation(house_contract_.max_pay);
+    company_.set_life_insurance_compensation(health_contract_.max_pay);
+
+    peoples_ = resolve.peoples_insurances(company_, 1);
+    insurance_cases_ = resolve.insurance_cases(peoples_, company_);
     tax_percentage_ = tax_percentage;
     base_demand_ = base_demand;
+    updMonth();
 }

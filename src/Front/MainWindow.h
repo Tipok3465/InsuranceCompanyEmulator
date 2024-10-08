@@ -23,9 +23,12 @@ public:
     void openCarContract();
     void openHouseContract();
     void setHealthContract();
+    void updMonth();
 private:
     Company company_;
+    resolve resolve;
     std::vector<std::vector<std::pair<int, int>>> peoples_;
+    std::vector<std::vector<std::pair<int, double>>> insurance_cases_;
     QTimer* capital_drawing_;
     QTimer* expense_drawing_;
     QTimer* income_drawing_;
@@ -70,10 +73,25 @@ private:
     int cur_capital_;
     int cur_cap = 0;
     int inc_val_ = 0;
+    int house_inc_val_ = 0;
+    int car_inc_val_ = 0;
+    int health_inc_val_ = 0;
     int exp_val_ = 0;
+    int house_exp_val_ = 0;
+    int car_exp_val_ = 0;
+    int health_exp_val_ = 0;
     int tax_percentage_;
     int base_demand_;
     int cur_month_id_ = 1;
+
+    int health_income_;
+    int health_expense_;
+    int car_income_;
+    int car_expense_;
+    int house_income_;
+    int house_expense_;
+    int MAX = 500000;
+
     IncomeLabel* income_label_;
     IncomeLabel* house_income_label_;
     IncomeLabel* car_income_label_;

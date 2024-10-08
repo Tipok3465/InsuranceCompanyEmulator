@@ -139,23 +139,23 @@ public:
     std::vector<std::vector<std::pair<int, int>>> peoples_insurances(Company& co, int cur_month) {
         std::mt19937 rnd(time(nullptr));
 //   peoples_insurances[i] = vector({l, r}, {l, r}, {l, r}) where home, car, life
-        std::vector<std::vector<std::pair<int, int>>> res(100);
+        std::vector<std::vector<std::pair<int, int>>> res(100, std::vector<std::pair<int, int>>(3));
         for (int i = 0; i < 100; ++i) {
             int determinant = (int)rnd() % 100;
             if (determinant <= co.get_home_insurance_demand()) {
-                res[i][0] = std::make_pair(cur_month, co.get_home_insurance_period() + cur_month);
+                res[i][0] = std::make_pair(cur_month, co.get_home_insurance_period());
             } else {
                 res[i][0] = std::make_pair(0, 0);
             }
             determinant = (int)rnd() % 100;
             if (determinant <= co.get_car_insurance_demand()) {
-                res[i][1] = std::make_pair(cur_month, co.get_car_insurance_period() + cur_month);
+                res[i][1] = std::make_pair(cur_month, co.get_car_insurance_period());
             } else {
                 res[i][1] = std::make_pair(0, 0);
             }
             determinant = (int)rnd() % 100;
             if (determinant <= co.get_life_insurance_demand()) {
-                res[i][2] = std::make_pair(cur_month, co.get_life_insurance_period() + cur_month);
+                res[i][2] = std::make_pair(cur_month, co.get_life_insurance_period());
             } else {
                 res[i][2] = std::make_pair(0, 0);
             }
@@ -167,7 +167,7 @@ public:
                                                                      Company& co) {
 //in res[i] vector{month of union, coefficient of union}
         std::mt19937 rnd(time(nullptr));
-        std::vector<std::vector<std::pair<int, double>>> res(100);
+        std::vector<std::vector<std::pair<int, double>>> res(100, std::vector<std::pair<int, double>>(3));
         int cases_home = (int)rnd() % 25;
         int cases_car = (int)rnd() % 35;
         int cases_life = (int)rnd() % 30;
@@ -200,9 +200,9 @@ public:
 // in month_result[i] home {profit, expenses} etc for  car, life
         std::vector<std::pair<int, int>> res(3);
         for (int i = 0; i < 100; ++i) {
-            bool home = peoples_insurances[i][0] != std::make_pair(0, 0) && month <= peoples_insurances[i][0].second;
-            bool car = peoples_insurances[i][1] != std::make_pair(0, 0) && month <= peoples_insurances[i][1].second;
-            bool life = peoples_insurances[i][2] != std::make_pair(0, 0) && month <= peoples_insurances[i][2].second;
+            bool home = month <= peoples_insurances[i][0].second;
+            bool car = month <= peoples_insurances[i][1].second;
+            bool life = month <= peoples_insurances[i][2].second;
 
             res[0].first += home * co.get_home_insurance_price();
             if (insurance_cases[i][0].first == month) {
