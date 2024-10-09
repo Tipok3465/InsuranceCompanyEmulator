@@ -106,7 +106,7 @@ int Company::get_home_insurance_period() const {
 }
 
 int Company::get_car_insurance_period() const {
-    return car_insurance_compensation;
+    return car_insurance_period;
 }
 
 int Company::get_life_insurance_period() const {
