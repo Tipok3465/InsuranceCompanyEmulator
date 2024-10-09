@@ -174,18 +174,21 @@ public:
         for(int i = 0; i < 100; ++i) {
             if (peoples_insurances[i][0] != std::make_pair(0, 0) && i < cases_home) {
                 res[i][0].first = abs((int)rnd()) % co.get_home_insurance_period() + peoples_insurances[i][0].first;
-                auto coefficient = abs((int)rnd()) % 1000 / 1000.0;
-                res[i][0].second = coefficient + 0.1;
+                auto coefficient = fabs((double)rnd());
+                coefficient -= (int)coefficient;
+                res[i][0].second = coefficient + 0.01;
             }
             if (peoples_insurances[i][1] != std::make_pair(0, 0) && i < cases_car) {
                 res[i][1].first = abs((int)rnd()) % co.get_car_insurance_period() + peoples_insurances[i][1].first;
                 auto coefficient = fabs((double)rnd());
-                res[i][1].second = coefficient + 0.1;
+                coefficient -= (int)coefficient;
+                res[i][1].second = coefficient + 0.01;
             }
             if (peoples_insurances[i][2] != std::make_pair(0, 0) && i < cases_life) {
                 res[i][2].first = abs((int)rnd()) % co.get_life_insurance_period() + peoples_insurances[i][2].first;
                 auto coefficient = fabs((double)rnd());
-                res[i][2].second = coefficient + 0.1;
+                coefficient -= (int)coefficient;
+                res[i][2].second = coefficient + 0.01;
             }
         }
         return res;
@@ -195,11 +198,7 @@ public:
                                                   std::vector<std::vector<std::pair<int, double>>>& insurance_cases,
                                                   Company& co, int month) {
 // in month_result[i] home {profit, expenses} etc for  car, life
-        std::vector<std::pair<int, int>> res(6);
-
-        int home_cases = 0, car_cases = 0, life_cases = 0;
-
-
+        std::vector<std::pair<int, int>> res(3);
         for (int i = 0; i < 100; ++i) {
             bool home = month <= peoples_insurances[i][0].second;
             bool car = month <= peoples_insurances[i][1].second;
@@ -208,24 +207,18 @@ public:
             res[0].first += home * co.get_home_insurance_price();
             if (insurance_cases[i][0].first == month) {
                 res[0].second += co.get_home_insurance_compensation() * insurance_cases[i][0].second;
-                ++home_cases;
             }
 
             res[1].first += car * co.get_car_insurance_price();
             if (insurance_cases[i][1].first == month) {
                 res[1].second += co.get_home_insurance_compensation() * insurance_cases[i][1].second;
-                ++car_cases;
             }
 
             res[2].first += life * co.get_life_insurance_price();
             if (insurance_cases[i][2].first == month) {
                 res[2].second += co.get_home_insurance_compensation() * insurance_cases[i][2].second;
-                ++life_cases;
             }
         }
-        res[3] = std::make_pair(home_cases, 0);
-        res[4] = std::make_pair(car_cases, 0);
-        res[5] = std::make_pair(life_cases, 0);
         return res;
     }
 

@@ -21,6 +21,7 @@ void ExpenseLabel::setWidth(int w) {
     x_ = this->x();
     width_ = w;
     this->resize(std::max(10, width_ * val_ / rhs_), this->height());
+    int x = x_ + width_ - this->width();
     this->move(x_ + width_ - this->width(), this->y());
 }
 
