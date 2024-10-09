@@ -62,7 +62,6 @@ void Company::set_car_insurance_period(int period) {
 
 void Company::set_life_insurance_period(int period) {
     life_insurance_period = period;
-    update_demand();
 }
 
 int Company::get_home_insurance_price() const {
@@ -106,7 +105,7 @@ int Company::get_home_insurance_period() const {
 }
 
 int Company::get_car_insurance_period() const {
-    return car_insurance_compensation;
+    return car_insurance_period;
 }
 
 int Company::get_life_insurance_period() const {
