@@ -6,7 +6,7 @@
 
 struct Contract {
     int month_count = 6;
-    int max_pay = 200000;
+    int max_pay = 400000;
     int price = 7500;
 };
 
@@ -111,6 +111,7 @@ private:
     int car_expense_;
     int house_income_;
     int house_expense_;
+    int gov_expense_;
     int MAX = 500000;
 
     IncomeLabel* income_label_;

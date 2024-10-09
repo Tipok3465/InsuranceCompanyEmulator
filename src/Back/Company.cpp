@@ -119,7 +119,6 @@ int Company::get_cur_balance() const {
 
 int Company::tax(int percent) {
     int tax = cur_balance * percent / 100;
-    cur_balance -= tax;
     return tax;
 }
 
@@ -143,8 +142,8 @@ int Company::buy_life_insurance() {
 }
 
 void Company::update_demand() {
-    home_insurance_demand = home_insurance_compensation / home_insurance_price / home_insurance_period * 40;
-    car_insurance_demand = car_insurance_compensation / car_insurance_price / car_insurance_period * 40;
-    life_insurance_demand = life_insurance_compensation / life_insurance_price / life_insurance_period * 40;
+    home_insurance_demand = std::min(home_insurance_compensation / home_insurance_price / home_insurance_period * 40, 80);
+    car_insurance_demand = std::min(car_insurance_compensation / car_insurance_price / car_insurance_period * 40, 80);
+    life_insurance_demand = std::min(life_insurance_compensation / life_insurance_price / life_insurance_period * 40, 80);
 }
 

@@ -89,7 +89,7 @@ App::App(int width, int height) {
     tax_percentage_editor_->resize(120, 30);
     tax_percentage_editor_->move(310, 205);
     tax_percentage_editor_->setRange(1, 100);
-    tax_percentage_editor_->setValue(9);
+    tax_percentage_editor_->setValue(30);
     tax_percentage_editor_->setAlignment(Qt::AlignCenter);
     tax_percentage_editor_->setFont(QFont(font_family_, 15));
 
