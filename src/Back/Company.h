@@ -168,24 +168,27 @@ public:
 //in res[i] vector{month of union, coefficient of union}
         std::mt19937 rnd(time(nullptr));
         std::vector<std::vector<std::pair<int, double>>> res(100, std::vector<std::pair<int, double>>(3));
-        int cases_home = abs((int)rnd()) % 50 + 10;
-        int cases_car = abs((int)rnd()) % 50 + 10;
-        int cases_life = abs((int)rnd()) % 50 + 10;
+        int cases_home = abs((int)rnd()) % 25;
+        int cases_car = abs((int)rnd()) % 35;
+        int cases_life = abs((int)rnd()) % 30;
         for(int i = 0; i < 100; ++i) {
             if (peoples_insurances[i][0] != std::make_pair(0, 0) && i < cases_home) {
                 res[i][0].first = abs((int)rnd()) % co.get_home_insurance_period() + peoples_insurances[i][0].first;
-                auto coefficient = abs((int)rnd() % 1000) / 1000.0;
-                res[i][0].second = coefficient + 0.1;
+                auto coefficient = fabs((double)rnd());
+                coefficient -= (int)coefficient;
+                res[i][0].second = coefficient + 0.01;
             }
             if (peoples_insurances[i][1] != std::make_pair(0, 0) && i < cases_car) {
                 res[i][1].first = abs((int)rnd()) % co.get_car_insurance_period() + peoples_insurances[i][1].first;
-                auto coefficient = abs((int)rnd() % 1000) / 1000.0 + 0.1;
-                res[i][1].second = coefficient + 0.1;
+                auto coefficient = fabs((double)rnd());
+                coefficient -= (int)coefficient;
+                res[i][1].second = coefficient + 0.01;
             }
             if (peoples_insurances[i][2] != std::make_pair(0, 0) && i < cases_life) {
                 res[i][2].first = abs((int)rnd()) % co.get_life_insurance_period() + peoples_insurances[i][2].first;
-                auto coefficient = abs((int)rnd() % 1000) / 1000.0;
-                res[i][2].second = coefficient + 0.1;
+                auto coefficient = fabs((double)rnd());
+                coefficient -= (int)coefficient;
+                res[i][2].second = coefficient + 0.01;
             }
         }
         return res;
