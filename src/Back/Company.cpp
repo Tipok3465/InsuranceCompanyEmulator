@@ -6,17 +6,17 @@
 
 void Company::set_home_insurance_price(int price) {
     home_insurance_price = price;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_car_insurance_price(int price) {
     car_insurance_price = price;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_life_insurance_price(int price) {
     life_insurance_price = price;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_cur_balance(int balance) {
@@ -37,32 +37,32 @@ void Company::set_life_insurance_demand(int demand) {
 
 void Company::set_home_insurance_compensation(int compensation) {
     home_insurance_compensation = compensation;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_car_insurance_compensation(int compensation) {
     car_insurance_compensation = compensation;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_life_insurance_compensation(int compensation) {
     life_insurance_compensation = compensation;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_home_insurance_period(int period) {
     home_insurance_period = period;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_car_insurance_period(int period) {
     car_insurance_period = period;
-    update_demand();
+//    update_demand();
 }
 
 void Company::set_life_insurance_period(int period) {
     life_insurance_period = period;
-    update_demand();
+//    update_demand();
 }
 
 int Company::get_home_insurance_price() const {
@@ -106,7 +106,7 @@ int Company::get_home_insurance_period() const {
 }
 
 int Company::get_car_insurance_period() const {
-    return car_insurance_compensation;
+    return car_insurance_period;
 }
 
 int Company::get_life_insurance_period() const {

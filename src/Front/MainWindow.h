@@ -6,8 +6,8 @@
 
 struct Contract {
     int month_count = 6;
-    int max_pay = 50000;
-    int price = 10000;
+    int max_pay = 200000;
+    int price = 7500;
 };
 
 class MainWindow : public QMainWindow {
@@ -23,12 +23,15 @@ public:
     void openCarContract();
     void openHouseContract();
     void setHealthContract();
+    void setHouseContract();
+    void setCarContract();
     void updMonth();
 private:
     Company company_;
     resolve resolve;
     std::vector<std::vector<std::pair<int, int>>> peoples_;
     std::vector<std::vector<std::pair<int, double>>> insurance_cases_;
+    std::vector<std::vector<std::pair<int, int>>> pref_res;
     QTimer* capital_drawing_;
     QTimer* expense_drawing_;
     QTimer* income_drawing_;
@@ -62,11 +65,25 @@ private:
     QMainWindow* car_contract_window_;
     QLabel* car_contract_bg_;
     QLabel* car_contract_text_;
+    QLabel* car_label_month_editor_;
+    QSpinBox* car_contract_month_editor_;
+    QPushButton* car_set_month_count_button_;
+    QLabel* car_label_max_pay_editor_;
+    QSpinBox* car_contract_max_pay_editor_;
+    QLabel* car_label_price_editor_;
+    QSpinBox* car_contract_price_editor_;
 
     QPushButton* open_house_contract_button_;
     QMainWindow* house_contract_window_;
     QLabel* house_contract_bg_;
     QLabel* house_contract_text_;
+    QLabel* house_label_month_editor_;
+    QSpinBox* house_contract_month_editor_;
+    QPushButton* house_set_month_count_button_;
+    QLabel* house_label_max_pay_editor_;
+    QSpinBox* house_contract_max_pay_editor_;
+    QLabel* house_label_price_editor_;
+    QSpinBox* house_contract_price_editor_;
 
     Contract health_contract_, car_contract_, house_contract_;
     int month_count_;
