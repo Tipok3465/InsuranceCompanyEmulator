@@ -142,8 +142,8 @@ int Company::buy_life_insurance() {
 }
 
 void Company::update_demand() {
-    home_insurance_demand = home_insurance_compensation / home_insurance_price / home_insurance_period * 100;
-    car_insurance_demand = car_insurance_compensation / car_insurance_price / car_insurance_period * 100;
-    life_insurance_demand = life_insurance_compensation / life_insurance_price / life_insurance_period * 100;
+    home_insurance_demand = home_insurance_compensation / home_insurance_price / home_insurance_period * 60;
+    car_insurance_demand = car_insurance_compensation / car_insurance_price / car_insurance_period * 60;
+    life_insurance_demand = life_insurance_compensation / life_insurance_price / life_insurance_period * 60;
 }
 

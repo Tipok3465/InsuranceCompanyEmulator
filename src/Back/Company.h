@@ -112,7 +112,7 @@ private:
 
 };
 
-class solutions {
+class resolve {
 public:
 
     void peoples_update(std::vector<std::vector<std::pair<int, int>>>& peoples_insurances, Company& co, int cur_month) {
@@ -168,9 +168,9 @@ public:
 //in res[i] vector{month of union, coefficient of union}
         std::mt19937 rnd(time(nullptr));
         std::vector<std::vector<std::pair<int, double>>> res(100, std::vector<std::pair<int, double>>(3));
-        int cases_home = abs((int)rnd()) % 25;
-        int cases_car = abs((int)rnd()) % 35;
-        int cases_life = abs((int)rnd()) % 30;
+        int cases_home = abs((int) rnd()) % 90 + 10;
+        int cases_car = abs((int) rnd()) % 110 + 10;
+        int cases_life = abs((int) rnd()) % 100 + 10;
         for(int i = 0; i < 100; ++i) {
             if (peoples_insurances[i][0] != std::make_pair(0, 0) && i < cases_home) {
                 res[i][0].first = abs((int)rnd()) % co.get_home_insurance_period() + peoples_insurances[i][0].first;
