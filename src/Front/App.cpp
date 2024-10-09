@@ -111,7 +111,7 @@ App::App(int width, int height) {
     base_demand_editor_->resize(120, 30);
     base_demand_editor_->move(310, 255);
     base_demand_editor_->setRange(1, 100);
-    base_demand_editor_->setValue(5);
+    base_demand_editor_->setValue(20);
     base_demand_editor_->setAlignment(Qt::AlignCenter);
     base_demand_editor_->setFont(QFont(font_family_, 15));
 

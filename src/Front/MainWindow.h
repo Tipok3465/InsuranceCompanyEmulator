@@ -25,7 +25,8 @@ public:
     void setHealthContract();
     void setHouseContract();
     void setCarContract();
-    void updMonth();
+    void plusMonth();
+    void minusMonth();
 private:
     Company company_;
     resolve resolve;
@@ -84,6 +85,9 @@ private:
     QSpinBox* house_contract_max_pay_editor_;
     QLabel* house_label_price_editor_;
     QSpinBox* house_contract_price_editor_;
+
+    QPushButton* minus_month_button_;
+    QPushButton* plus_month_button_;
 
     Contract health_contract_, car_contract_, house_contract_;
     int month_count_;

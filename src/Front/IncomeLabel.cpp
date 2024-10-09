@@ -20,6 +20,7 @@ void IncomeLabel::setRange(int l, int r) {
 void IncomeLabel::setValue(int x) {
     if (rhs_ < x) return;
     if (x <= lhs_) {
+        val_ = lhs_;
         this->resize(10, this->height());
         return;
     }

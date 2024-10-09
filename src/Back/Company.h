@@ -196,7 +196,7 @@ public:
                                                   Company& co, int month) {
     // in month_result[i] home {profit, expenses} etc for  car, life
         int home_cases = 0, car_cases = 0, life_cases = 0;
-        std::vector<std::pair<int, int>> res(3);
+        std::vector<std::pair<int, int>> res(6);
         for (int i = 0; i < 100; ++i) {
             bool home = month <= peoples_insurances[i][0].second;
             bool car = month <= peoples_insurances[i][1].second;

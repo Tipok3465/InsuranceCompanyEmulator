@@ -21,6 +21,30 @@ MainWindow::MainWindow(QWidget *parent) {
                               "}");
     cur_month_->setAlignment(Qt::AlignCenter);
 
+    minus_month_button_ = new QPushButton(this);
+    minus_month_button_->resize(60, 30);
+    minus_month_button_->move(370, 15);
+    minus_month_button_->setFont(QFont(font_family_, 22));
+    minus_month_button_->setText("←");
+    minus_month_button_->setStyleSheet("QPushButton {"
+                                                "color: #000000;"
+                                                "background: rgba(0, 0, 0, 30);"
+                                                "border-radius: 10px;"
+                                                "}");
+    connect(minus_month_button_, &QPushButton::released, this, &MainWindow::minusMonth);
+
+    plus_month_button_ = new QPushButton(this);
+    plus_month_button_->resize(60, 30);
+    plus_month_button_->move(594, 15);
+    plus_month_button_->setFont(QFont(font_family_, 22));
+    plus_month_button_->setText("→");
+    plus_month_button_->setStyleSheet("QPushButton {"
+                                       "color: #000000;"
+                                       "background: rgba(0, 0, 0, 30);"
+                                       "border-radius: 10px;"
+                                       "}");
+    connect(plus_month_button_, &QPushButton::released, this, &MainWindow::plusMonth);
+
     cur_capital_label_ = new QLabel(this);
     cur_capital_label_->setFont(QFont(font_family_, 30));
     cur_capital_label_->resize(1024, 70);
@@ -557,7 +581,8 @@ void MainWindow::setHealthContract() {
                                    " months from the date of signing."\
                                    " Cost of conclusion: " +
                                    QString::fromStdString(std::to_string(health_contract_.price))+ "₽.\n\n");
-
+    company_.update_demand();
+    resolve.peoples_update(peoples_, company_, cur_month_id_);
 }
 
 void MainWindow::setHouseContract() {
@@ -572,6 +597,8 @@ void MainWindow::setHouseContract() {
                                 " months from the date of signing."\
                                    " Cost of conclusion: " +
                                 QString::fromStdString(std::to_string(house_contract_.price))+ "₽.\n\n");
+    company_.update_demand();
+    resolve.peoples_update(peoples_, company_, cur_month_id_);
 }
 
 void MainWindow::setCarContract() {
@@ -586,21 +613,21 @@ void MainWindow::setCarContract() {
                                 " months from the date of signing."\
                                    " Cost of conclusion: " +
                                 QString::fromStdString(std::to_string(car_contract_.price))+ "₽.\n\n");
-
+    company_.update_demand();
+    resolve.peoples_update(peoples_, company_, cur_month_id_);
 }
 
-void MainWindow::updMonth() {
-    auto res = resolve.month_result(peoples_, insurance_cases_, company_, cur_month_id_);
-    cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
+void MainWindow::minusMonth() {
+    if (cur_month_id_ == 2) return;
+    cur_month_id_--;
+    cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_-1) +
                                                "/" + std::to_string(month_count_) + " month"));
-    pref_res.push_back(res);
-    cur_month_id_++;
-    house_income_ = res[0].first;
-    house_expense_ = res[0].second;
-    car_income_ = res[1].first;
-    car_expense_ = res[1].second;
-    health_income_ = res[2].first;
-    health_expense_ = res[2].second;
+    house_income_ = pref_res[cur_month_id_ - 2][0].first;
+    house_expense_ = pref_res[cur_month_id_ - 2][0].second;
+    car_income_ = pref_res[cur_month_id_ - 2][1].first;
+    car_expense_ = pref_res[cur_month_id_ - 2][1].second;
+    health_income_ = pref_res[cur_month_id_ - 2][2].first;
+    health_expense_ = pref_res[cur_month_id_ - 2][2].second;
 
     car_inc_val_ = car_income_ * 100 / MAX;
     car_exp_val_ = car_expense_ * 100 / (MAX/2);
@@ -611,7 +638,14 @@ void MainWindow::updMonth() {
     inc_val_ = (house_income_ + car_income_ + health_income_) * 100 / (3*MAX);
     exp_val_ = (house_expense_ + car_expense_ + health_expense_) * 100 / (3*MAX/2);
 
-    cur_capital_ = cur_capital_ + car_income_ - car_expense_ + house_income_ - house_expense_ + health_income_ - health_expense_;
+    cur_capital_ = pref_res[cur_month_id_-2][6].first;
+
+    house_inc_label_->setText("house (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][3].first)) + ")");
+    house_exp_label_->setText("house (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][3].second)) + ")");
+    car_inc_label_->setText("car (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][4].first)) + ")");
+    car_exp_label_->setText("car (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][4].second)) + ")");
+    health_inc_label_->setText("health (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][5].first)) + ")");
+    health_exp_label_->setText("health (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][5].second)) + ")");
 
     income_label_->setValue(0);
     car_income_label_->setValue(0);
@@ -626,7 +660,57 @@ void MainWindow::updMonth() {
     expense_drawing_->start(25);
 
     capital_drawing_->start(10);
+}
 
+void MainWindow::plusMonth() {
+    if (cur_month_id_ == month_count_ + 1)  {
+        // you win blablabla
+        return;
+    }
+    auto res = resolve.month_result(peoples_, insurance_cases_, company_, cur_month_id_);
+    cur_month_->setText(QString::fromStdString(std::to_string(cur_month_id_) +
+                                               "/" + std::to_string(month_count_) + " month"));
+    if (cur_month_id_ > pref_res.size()) pref_res.push_back(res);
+    cur_month_id_++;
+    house_income_ = pref_res[cur_month_id_ - 2][0].first;
+    house_expense_ = pref_res[cur_month_id_ - 2][0].second;
+    car_income_ = pref_res[cur_month_id_ - 2][1].first;
+    car_expense_ = pref_res[cur_month_id_ - 2][1].second;
+    health_income_ = pref_res[cur_month_id_ - 2][2].first;
+    health_expense_ = pref_res[cur_month_id_ - 2][2].second;
+
+    house_inc_label_->setText("house (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][3].first)) + ")");
+    house_exp_label_->setText("house (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][3].second)) + ")");
+    car_inc_label_->setText("car (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][4].first)) + ")");
+    car_exp_label_->setText("car (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][4].second)) + ")");
+    health_inc_label_->setText("health (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][5].first)) + ")");
+    health_exp_label_->setText("health (" + QString::fromStdString(std::to_string(pref_res[cur_month_id_-2][5].second)) + ")");
+
+    car_inc_val_ = car_income_ * 100 / MAX;
+    car_exp_val_ = car_expense_ * 100 / (MAX/2);
+    house_inc_val_ = house_income_ * 100 / MAX;
+    house_exp_val_ = house_expense_ * 100 / (MAX/2);
+    health_inc_val_ = health_income_ * 100 / MAX;
+    health_exp_val_ = health_expense_ * 100 / (MAX/2);
+    inc_val_ = (house_income_ + car_income_ + health_income_) * 100 / (3*MAX);
+    exp_val_ = (house_expense_ + car_expense_ + health_expense_) * 100 / (3*MAX/2);
+
+    cur_capital_ = cur_capital_ + car_income_ - car_expense_ + house_income_ - house_expense_ + health_income_ - health_expense_;
+    pref_res[cur_month_id_-2].push_back({cur_capital_, cur_capital_});
+
+    income_label_->setValue(0);
+    car_income_label_->setValue(0);
+    house_income_label_->setValue(0);
+    heath_income_label_->setValue(0);
+    income_drawing_->start(25);
+
+    expense_label_->setValue(0);
+    car_expense_label_->setValue(0);
+    house_expense_label_->setValue(0);
+    health_expense_label_->setValue(0);
+    expense_drawing_->start(25);
+
+    capital_drawing_->start(10);
 }
 
 void MainWindow::openHealthContract() {
@@ -693,7 +777,6 @@ void MainWindow::drawIncome() {
 void MainWindow::drawCapital() {
     if (cur_cap == cur_capital_) {
         capital_drawing_->stop();
-        cur_cap = 0;
     } else if (cur_cap < cur_capital_){
         if (abs(cur_cap - cur_capital_) <= 10) cur_cap++;
         else if (abs(cur_cap - cur_capital_) <= 1000) cur_cap += 10;
@@ -747,5 +830,5 @@ void MainWindow::setParams(int month_count, int start_capital, int tax_percentag
 
     peoples_ = resolve.peoples_insurances(company_, 1);
     insurance_cases_ = resolve.insurance_cases(peoples_, company_);
-    updMonth();
+    plusMonth();
 }

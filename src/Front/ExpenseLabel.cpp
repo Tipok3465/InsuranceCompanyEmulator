@@ -28,7 +28,9 @@ void ExpenseLabel::setWidth(int w) {
 void ExpenseLabel::setValue(int x) {
     if (rhs_ < x) return;
     if (x <= lhs_) {
+        val_ = lhs_;
         this->resize(10, this->height());
+        this->move(x_ + width_ - this->width(), this->y());
         return;
     }
     val_ = x;
