@@ -119,17 +119,17 @@ public:
         std::mt19937 rnd(time(nullptr));
         for (int i = 0; i < 100; ++i) {
             int determinant = abs((int)rnd()) % 100;
-            if (peoples_insurances[i][0] == std::make_pair(0, 0) &&
+            if (peoples_insurances[i][0].second < cur_month &&
                 determinant <= co.get_home_insurance_demand()) {
                 peoples_insurances[i][0] = std::make_pair(cur_month, co.get_home_insurance_period() + cur_month - 1);
             }
             determinant = abs((int)rnd()) % 100;
-            if (peoples_insurances[i][1] == std::make_pair(0, 0) &&
+            if (peoples_insurances[i][1].second < cur_month &&
                 determinant <= co.get_car_insurance_demand()) {
                 peoples_insurances[i][1] = std::make_pair(cur_month, co.get_car_insurance_period() + cur_month - 1);
             }
             determinant = abs((int)rnd()) % 100;
-            if (peoples_insurances[i][2] == std::make_pair(0, 0) &&
+            if (peoples_insurances[i][2].second < cur_month &&
                 determinant <= co.get_life_insurance_demand()) {
                 peoples_insurances[i][2] = std::make_pair(cur_month, co.get_life_insurance_period() + cur_month - 1);
             }
@@ -197,10 +197,15 @@ public:
     // in month_result[i] home {profit, expenses} etc for  car, life
         int home_cases = 0, car_cases = 0, life_cases = 0;
         std::vector<std::pair<int, int>> res(6);
+        res[4] = res[5] = res[6] = std::make_pair(0, 0);
         for (int i = 0; i < 100; ++i) {
             bool home = month <= peoples_insurances[i][0].second;
             bool car = month <= peoples_insurances[i][1].second;
             bool life = month <= peoples_insurances[i][2].second;
+
+            res[3].first += home;
+            res[4].first += car;
+            res[5].first += life;
 
             res[0].first += home * co.get_home_insurance_price();
             if (insurance_cases[i][0].first == month) {
@@ -220,10 +225,9 @@ public:
                 ++life_cases;
             }
         }
-        res[3] = std::make_pair(home_cases, 0);
-        res[4] = std::make_pair(car_cases, 0);
-        res[5] = std::make_pair(life_cases, 0);
-
+        res[3].second = home_cases;
+        res[4].second = car_cases;
+        res[5].second= life_cases;
         return res;
     }
 
